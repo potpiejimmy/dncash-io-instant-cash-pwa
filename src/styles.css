@@ -5,3 +5,8 @@ body {
     margin: 0;
     border: 0;
 }
+
+.horizontalcenter {
+    display: flex;
+    justify-content: center; /* align horizontally */
+}
