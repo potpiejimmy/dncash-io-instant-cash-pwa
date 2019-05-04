@@ -1,0 +1,12 @@
+<div fxLayout="row" fxLayoutGap="8%" class="verticalcenter">
+    <span></span>
+    <button style="margin-left: 2em;" mat-icon-button (click)="minus()" [disabled]="!count"><i class="material-icons" style="font-size: 2.5em;">remove_circle_outline</i></button>
+    <div class="fullscreencenter">
+        <div class="denomcountdisp">
+            {{count}}
+        </div>
+        <img fxFlex [src]="'assets/euro'+denom/100+'.png'" width="70%" height="70%"/>
+    </div>
+    <button style="margin-right: 2em;" mat-icon-button (click)="plus()" [disabled]="count>=5"><i class="material-icons" style="font-size: 2.5em;">add_circle_outline</i></button>
+    <span></span>
+</div>

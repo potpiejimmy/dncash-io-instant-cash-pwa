@@ -1,12 +1,87 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
+html {
+    height: 100%;
+}
+
 body {
+    height: 100%;
     margin: 0;
     border: 0;
+    font-family: Roboto,"Helvetica Neue",sans-serif;
+    background: #f0f8ff;
+}
+
+.fullscreencenter {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center; /* align horizontal */
+    align-items: center; /* align vertical */
+}
+
+.verticalcenter {
+    display: flex;
+    align-items: center; /* align vertical */
 }
 
 .horizontalcenter {
     display: flex;
-    justify-content: center; /* align horizontally */
+    justify-content: center; /* align horizontal */
+}
+
+.horizontalright {
+    display: flex;
+    justify-content: right; /* align horizontal */
+}
+
+.marvel-device .screen, .mobile-body {
+    background: #f0f8ff;
+}
+
+.mobile-body {
+    height: 100%;
+}
+
+.qrcode, .qrcode img {
+    width: 100%;
+}
+
+.amountdisp, .amountdispsub {
+    text-align: center;
+}
+
+.amountdisp {
+    font-size: 1.5em;
+}
+
+.amountdispsub {
+    font-size: 0.75em;
+}
+
+.denomcountdisp {
+    z-index: 2;
+    position: absolute;
+    font-size: 2em;
+    font-weight: bold;
+    text-shadow: 0.05em 0.05em white;
+}
+
+.denomcounttoken {
+    font-size: 0.75em;
+    position: absolute;
+    text-shadow: 0.05em 0.05em white;
+}
+
+.table {
+    display: table;
+}
+
+.table-row {
+    display: table-row;
+}
+
+.table-cell {
+    display: table-cell;
 }

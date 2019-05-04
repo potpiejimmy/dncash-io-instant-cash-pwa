@@ -8,16 +8,29 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
+// Externals
+import { LocalStorageModule } from 'angular-2-local-storage';
+import { ToastrModule } from 'ngx-toastr';
+
 // App
 import { AppRoutingModule } from './app-routing.module';
+import { InstantApiService } from './services/instantapi.service';
+import { AppService } from './services/app.service';
 import { AppComponent } from './app.component';
 import { MainComponent } from './routes/main';
-import { InstantApiService } from './services/instantapi.service';
+import { AmountComponent } from './routes/amount';
+import { DenomSelComponent } from './components/denomsel';
+import { RegisterComponent } from './routes/register';
+import { TokenComponent } from './routes/token';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MainComponent
+    MainComponent,
+    AmountComponent,
+    DenomSelComponent,
+    RegisterComponent,
+    TokenComponent
   ],
   imports: [
     BrowserModule,
@@ -27,9 +40,13 @@ import { InstantApiService } from './services/instantapi.service';
     // Material:
     MatToolbarModule,
     MatButtonModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    // Externals:
+    LocalStorageModule.forRoot({ prefix: 'dncashio-instant-cash', storageType: 'localStorage' }), // or sessionStorage
+    ToastrModule.forRoot({ preventDuplicates: true })
   ],
   providers: [
+    AppService,
     InstantApiService
   ],
   bootstrap: [AppComponent]

@@ -1,0 +1,31 @@
+<div style="margin: 1em;">
+    <div fxLayout="row" fxLayoutGap="1em">
+        <a mat-icon-button (click)="finish()"><i class="material-icons">chevron_left</i></a>
+        <div style="flex: 1 1 auto;"><div class="fullscreencenter">
+            <div fxLayout="column">
+                <div class="amountdisp">{{headerLabel()}}</div>
+                <div *ngIf="token().expires" class="amountdispsub">{{expirationString}}</div>
+            </div>
+        </div></div>
+        <button mat-icon-button (click)="delete()"><i class="material-icons">delete_forever</i></button>
+    </div>
+</div>
+
+<div style="margin-bottom: 1em;" class="horizontalcenter">
+    <div class="table">
+        <div class="table-row" *ngIf="token().info && token().info.denomData">
+            <div fxFlex class="table-cell horizontalcenter" *ngFor="let denom of token().info.denomData" style="align-items: center;">
+                <div fxFlex *ngIf="denom.c && denom.c-1" class="denomcounttoken">{{denom.c}}</div>
+                <img *ngIf="denom.c"[src]="'assets/euro'+denom.d/100+'.png'" height="32px"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="horizontalcenter" *ngIf="decrypting">
+    <mat-spinner></mat-spinner>
+</div>
+
+<div style="margin: 1em; text-align: center;">
+    <span>{{qrCodeDataInfo()}}</span>
+</div>

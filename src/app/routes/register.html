@@ -1,0 +1,23 @@
+<div style="margin: 1.5em;">
+    <div fxLayout="column" fxLayoutGap="1em">
+        <span class="verticalcenter">
+            <i class="material-icons">perm_device_information</i>
+            Register your device
+        </span>
+        <p>
+            Your device is not registered for secure cash services yet.
+        </p>
+        <p>
+            Please click Register to create a unique private key.
+        </p>
+        <button *ngIf="!processing && !pair" mat-raised-button color="primary" (click)="register()">Register</button>
+    </div>
+
+    <div class="horizontalcenter" style="margin: 2em;" *ngIf="processing">
+        <mat-spinner></mat-spinner>
+    </div>
+    <div class="horizontalcenter" *ngIf="processing">
+        <span *ngIf="!pair">Generating 2048-bit RSA key pair</span>
+        <span *ngIf="pair">Registering</span>
+    </div>    
+</div>
