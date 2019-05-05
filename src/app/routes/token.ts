@@ -15,7 +15,7 @@ import * as moment from 'moment';
 export class TokenComponent implements OnInit, OnDestroy {
 
     decryptedToken: Buffer;
-    decrypting: boolean = true;
+    decrypting: boolean = false;
 
     expirationString: string;
     updateExpirationTimeout: any;
@@ -36,9 +36,9 @@ export class TokenComponent implements OnInit, OnDestroy {
         // fetch triggercode if passed via query param
         this.route.queryParams.subscribe(params => this.triggercodeQueryParam = params.triggercode);
         if (!this.appService.currentToken) {
-            // no token set from main UI, try to load the first available token if this route is directly invoked
-            this.instantApiService.getToken().then(res => {
-                this.appService.currentToken = res;
+            // no token set, try to load the first available token if this route is directly invoked or hard-refreshed
+            this.instantApiService.getToken().then(t => {
+                this.appService.currentToken = t;
                 this.initializeToken();
             });
         } else {
@@ -53,15 +53,15 @@ export class TokenComponent implements OnInit, OnDestroy {
     initializeToken(): void {
         if (!this.appService.currentToken) this.finish();
         console.log(this.appService.currentToken);
-        setTimeout(() => this.decryptToken(), 200);
+//        setTimeout(() => this.decryptToken(), 200);
         this.buildExpirationString();
     }
     
     delete() {
-        // this.tokenApiService.deleteToken(this.appService.currentToken.uuid).then(() => {
-        //     this.appService.currentToken = null;
-        //     this.finish();
-        // });
+        this.instantApiService.deleteToken(this.appService.currentToken.uuid).then(() => {
+            this.appService.currentToken = null;
+            this.finish();
+        });
     }
 
     headerLabel() {

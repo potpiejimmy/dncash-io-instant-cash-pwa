@@ -25,7 +25,12 @@ export class InstantApiService extends AuthHttp {
     }
 
     getToken(): Promise<any> {
-        return this.get(environment.apiUrl+"tokens?device_uuid="+this.localStorage.get("device-uuid"));
+        // returns the first available OPEN token
+        return this.get(environment.apiUrl+"tokens/"+this.localStorage.get("device-uuid")).then(res => res[0]);
+    }
+
+    deleteToken(uid: number): Promise<any> {
+        return this.delete(environment.apiUrl+"tokens/"+this.localStorage.get("device-uuid")+"/"+uid);
     }
 
     processCashout(triggercode: string, radiocode: string, signature: string): Promise<any> {

@@ -28,7 +28,7 @@ export class RegisterComponent {
     }
 
     registerDevice() {
-        this.pair = keypair({bits: 2048});
+        this.pair = keypair({bits: 1024}); // XXX demo, go to 2048 for production
         console.log(JSON.stringify(this.pair));
         this.localStorageService.set("keypair", this.pair);
 

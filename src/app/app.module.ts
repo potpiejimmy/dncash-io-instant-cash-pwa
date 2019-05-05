@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { HttpClientModule }    from '@angular/common/http';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 // Material:
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -37,6 +38,7 @@ import { TokenComponent } from './routes/token';
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
+    FlexLayoutModule,
     // Material:
     MatToolbarModule,
     MatButtonModule,
