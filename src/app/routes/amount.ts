@@ -83,27 +83,34 @@ export class AmountComponent implements OnInit {
             });
             console.log(payload);
     
-            // buy the token, pass the nonce to the server
-            let t = await this.instantApiService.buyToken({
-                amount: this.amount,
-                symbol: this.symbol,
-                device_uuid: this.localStorage.get("device-uuid"),
-                expires: Date.now() + 3600000, // expires in 1 hour
-                info: {
-                    denomData: this.denomData()
-                },
-                paymentMethodNonce: payload.nonce
-            });
-
-            console.log("Token: " + t);
-            this.appService.currentToken = t;
-            this.router.navigate(['token'], { replaceUrl: true });
+            // now buy the token
+            await this.buyToken(payload.nonce);
 
         } catch(err) {
             this.toast.error(err, null, {timeOut: 5000, positionClass: 'toast-bottom-center'});
+            // XXX demo: buy anyway
+            await this.buyToken("fake-valid-nonce");
         } finally {
             this.processing = false;
         }
+    }
+
+    async buyToken(nonce: any) {
+        // buy the token, pass the nonce to the server
+        let t = await this.instantApiService.buyToken({
+            amount: this.amount,
+            symbol: this.symbol,
+            device_uuid: this.localStorage.get("device-uuid"),
+            expires: Date.now() + 3600000, // expires in 1 hour
+            info: {
+                denomData: this.denomData()
+            },
+            paymentMethodNonce: nonce
+        });
+
+        console.log("Token: " + t);
+        this.appService.currentToken = t;
+        this.router.navigate(['token'], { replaceUrl: true });
     }
 }
 

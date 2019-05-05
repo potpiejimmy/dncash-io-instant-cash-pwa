@@ -1,0 +1,13 @@
+<div class="horizontalcenter" style="margin: 2em;">
+    <div class="amountdisp">{{headerLabel}}</div>
+</div>
+
+<denom-show [token]="token" height="48"></denom-show>
+
+<div *ngIf="processing" class="horizontalcenter">
+    <mat-spinner></mat-spinner>
+</div>
+
+<div class="horizontalcenter" style="margin: 2em; text-align: center;">
+    {{processingInfo}}
+</div>

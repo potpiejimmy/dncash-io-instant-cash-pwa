@@ -23,6 +23,8 @@ import { AmountComponent } from './routes/amount';
 import { DenomSelComponent } from './components/denomsel';
 import { RegisterComponent } from './routes/register';
 import { TokenComponent } from './routes/token';
+import { ProcessComponent } from './routes/process';
+import { DenomShowComponent } from './components/denomshow';
 
 @NgModule({
   declarations: [
@@ -30,8 +32,10 @@ import { TokenComponent } from './routes/token';
     MainComponent,
     AmountComponent,
     DenomSelComponent,
+    DenomShowComponent,
     RegisterComponent,
-    TokenComponent
+    TokenComponent,
+    ProcessComponent
   ],
   imports: [
     BrowserModule,

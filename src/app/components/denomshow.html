@@ -1,0 +1,10 @@
+<div style="margin-bottom: 1em;" class="horizontalcenter">
+    <div class="table">
+        <div class="table-row" *ngIf="token.info && token.info.denomData">
+            <div fxFlex class="table-cell horizontalcenter" *ngFor="let denom of token.info.denomData" style="align-items: center;">
+                <div fxFlex *ngIf="denom.c && denom.c-1" class="denomcounttoken">{{denom.c}}</div>
+                <img *ngIf="denom.c"[src]="'assets/euro'+denom.d/100+'.png'" [height]="height"/>
+            </div>
+        </div>
+    </div>
+</div>
