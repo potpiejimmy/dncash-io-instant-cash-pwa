@@ -47,7 +47,6 @@ export class RegisterComponent {
     }
 
     finish() {
-        this.router.navigate(['/']);
+        this.router.navigate(['/'], { replaceUrl: true });
     }
 }
-  

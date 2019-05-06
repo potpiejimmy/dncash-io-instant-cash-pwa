@@ -88,9 +88,9 @@ export class AmountComponent implements OnInit {
             await this.buyToken(payload.nonce);
 
         } catch(err) {
-            this.toast.error(err, null, {timeOut: 5000, positionClass: 'toast-bottom-center'});
+            //this.toast.error(err, null, {timeOut: 5000, positionClass: 'toast-bottom-center'});
             // XXX demo: buy anyway
-            //await this.buyToken("fake-valid-nonce");
+            await this.buyToken("fake-valid-nonce");
         } finally {
             this.processing = false;
         }
