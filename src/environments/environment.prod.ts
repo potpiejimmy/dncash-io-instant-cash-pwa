@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: "https://instantapi.doogetha.com/instant/v1/"
+  apiUrl: "https://instantapi.dncash.io/instant/v1/"
 };
