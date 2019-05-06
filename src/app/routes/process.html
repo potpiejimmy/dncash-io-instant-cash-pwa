@@ -8,6 +8,11 @@
     <mat-spinner></mat-spinner>
 </div>
 
+<div *ngIf="!processing" class="horizontalcenter">
+    <i *ngIf="processingResult" class="material-icons" style="font-size: 16em; color: green;">done_outline</i>
+    <i *ngIf="!processingResult" class="material-icons" style="font-size: 16em; color: red;">error_outline</i>
+</div>
+
 <div class="horizontalcenter" style="margin: 2em; text-align: center;">
     {{processingInfo}}
 </div>

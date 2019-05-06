@@ -33,8 +33,9 @@ export class InstantApiService extends AuthHttp {
         return this.delete(environment.apiUrl+"tokens/"+this.localStorage.get("device-uuid")+"/"+uid);
     }
 
-    processCashout(triggercode: string, radiocode: string, signature: string): Promise<any> {
+    processCashout(uuid: string, triggercode: string, radiocode: string, signature: string): Promise<any> {
         return this.post(environment.apiUrl+"trigger", {
+            uuid: uuid,
             triggercode: triggercode,
             radiocode: radiocode,
             signature: signature

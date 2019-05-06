@@ -15,6 +15,7 @@ export class ProcessComponent implements OnInit {
 
     processing: boolean = false;
     processingInfo: string;
+    processingResult: boolean = false;
     decryptedToken: Buffer;
 
     constructor(
@@ -41,11 +42,11 @@ export class ProcessComponent implements OnInit {
     }
 
     initializeToken(): void {
+        this.processing = true;
         setTimeout(() => this.decryptToken(), 200);
     }
 
     decryptToken(): void {
-        this.processing = true;
         this.processingInfo = "Decrypting token...";
         if (!this.appService.currentToken) return;
         try {
@@ -71,12 +72,16 @@ export class ProcessComponent implements OnInit {
             sign.write(triggercode+radiocode);
             let signature = sign.sign(this.localStorageService.get("keypair")['private']).toString('base64');
             this.processingInfo = "Processing cashout...";
-            let result = await this.instantApiService.processCashout(triggercode, radiocode, signature);
+            let result = await this.instantApiService.processCashout(this.token.uuid, triggercode, radiocode, signature);
             console.log(result);
-            this.processingInfo = result.status;
+            this.processingResult = result.success;
+            this.processingInfo = result.success ? "The money was cashed out successfully." : "Oops, something went wrong";
+            if (!result.success) {
+                this.toast.error(result.status, null, {timeOut: 5000, positionClass: 'toast-bottom-center'});
+            }
         } catch (err) {
             console.log(err);
-            this.toast.warning(err, null, {timeOut: 5000, positionClass: 'toast-bottom-center'});
+            this.toast.error(err, null, {timeOut: 5000, positionClass: 'toast-bottom-center'});
         } finally {
             this.processing = false;
         }

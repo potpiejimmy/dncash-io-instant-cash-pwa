@@ -66,7 +66,8 @@ export class AmountComponent implements OnInit {
     
             // create payment request API
             let request = await paymentRequest.create({
-                client: clientInstance
+                client: clientInstance,
+                googlePayVersion: 2
             });
     
             // get the payment token nonce
@@ -89,7 +90,7 @@ export class AmountComponent implements OnInit {
         } catch(err) {
             this.toast.error(err, null, {timeOut: 5000, positionClass: 'toast-bottom-center'});
             // XXX demo: buy anyway
-            await this.buyToken("fake-valid-nonce");
+            //await this.buyToken("fake-valid-nonce");
         } finally {
             this.processing = false;
         }

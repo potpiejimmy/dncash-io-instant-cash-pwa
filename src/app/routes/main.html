@@ -1,6 +1,3 @@
-<p style="text-align: center;" *ngIf="clientAuthorizationToken">
-    <button *ngIf="!processing" mat-stroked-button (click)="pay()">PAY NOW</button>
-</p>
-<div class="horizontalcenter" *ngIf="processing">
+<div class="horizontalcenter">
     <mat-spinner></mat-spinner>
 </div>

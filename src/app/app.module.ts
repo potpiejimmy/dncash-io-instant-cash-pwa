@@ -25,6 +25,8 @@ import { RegisterComponent } from './routes/register';
 import { TokenComponent } from './routes/token';
 import { ProcessComponent } from './routes/process';
 import { DenomShowComponent } from './components/denomshow';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -49,7 +51,7 @@ import { DenomShowComponent } from './components/denomshow';
     MatProgressSpinnerModule,
     // Externals:
     LocalStorageModule.forRoot({ prefix: 'dncashio-instant-cash', storageType: 'localStorage' }), // or sessionStorage
-    ToastrModule.forRoot({ preventDuplicates: true })
+    ToastrModule.forRoot({ preventDuplicates: true }), ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
     AppService,
