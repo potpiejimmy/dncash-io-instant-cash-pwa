@@ -5,8 +5,13 @@ import { Router } from "@angular/router";
 import { LocalStorageService } from "angular-2-local-storage";
 import { InstantApiService } from '../services/instantapi.service';
 import { ToastrService } from "ngx-toastr";
-import * as client from 'braintree-web/client';
-import * as paymentRequest from 'braintree-web/payment-request';
+import * as braintreeClient from 'braintree-web/client';
+// Option A) Payment Request API version:
+//import * as paymentApi from 'braintree-web/payment-request';
+// Option B) Google Pay API version:
+// Note: this one also needs the pay.js script in index.html, see there
+import * as paymentApi from 'braintree-web/google-payment';
+declare var google: any; // compile workaround for pay.js Google lib
 
 @Component({
     selector: 'amount',
@@ -60,13 +65,15 @@ export class AmountComponent implements OnInit {
         // now buy the token:
         try {
             // create a braintree client
-            let clientInstance = await client.create({
+            let braintreeClientInstance = await braintreeClient.create({
                 authorization: this.localStorage.get('braintree-auth')
             });
     
+            // --- OPTION A: Payment Request API ---
+/*            
             // create payment request API
-            let request = await paymentRequest.create({
-                client: clientInstance,
+            let request = await paymentApi.create({
+                client: braintreeClientInstance,
                 googlePayVersion: 2
             });
     
@@ -77,20 +84,67 @@ export class AmountComponent implements OnInit {
                         label: 'Amount',
                         amount: {
                             currency: this.symbol,
-                            value: this.amount/100
+                            value: ""+(this.amount/100)
                         }
                     }
                 }
             });
             console.log(payload);
-    
-            // now buy the token
-            await this.buyToken(payload.nonce);
+  */  
+            // --- END OPTION A ---
+            // --- OPTION B: Google Pay API ---
+
+            let googlePaymentsClient = new google.payments.api.PaymentsClient({
+                environment: 'TEST' // Or 'PRODUCTION'
+            });
+
+            // create payment request API
+            let googlePaymentInstance = await paymentApi.create({
+                client: braintreeClientInstance,
+                googlePayVersion: 2,
+                //googleMerchantId: 'merchant-id-from-google'
+            });
+   
+            let readyToPay = await googlePaymentsClient.isReadyToPay({
+                // see https://developers.google.com/pay/api/web/reference/object#IsReadyToPayRequest
+                apiVersion: 2,
+                apiVersionMinor: 0,
+                allowedPaymentMethods: googlePaymentInstance.createPaymentDataRequest().allowedPaymentMethods,
+                existingPaymentMethodRequired: true // Optional
+            });
+            if (!readyToPay.result) throw "Google Pay not available";
+
+            let paymentDataRequest = googlePaymentInstance.createPaymentDataRequest({
+                transactionInfo: {
+                    currencyCode: this.symbol,
+                    totalPriceStatus: 'FINAL',
+                    totalPrice: ""+(this.amount/100)
+                }
+            });
+
+            // We recommend collecting billing address information, at minimum
+            // billing postal code, and passing that billing postal code with all
+            // Google Pay card transactions as a best practice.
+            // See all available options at https://developers.google.com/pay/api/web/reference/object
+            let cardPaymentMethod = paymentDataRequest.allowedPaymentMethods[0];
+            cardPaymentMethod.parameters.billingAddressRequired = true;
+            cardPaymentMethod.parameters.billingAddressParameters = {
+                format: 'FULL',
+                phoneNumberRequired: false
+            };
+
+            let paymentData = await googlePaymentsClient.loadPaymentData(paymentDataRequest);
+            let payload = googlePaymentInstance.parseResponse(paymentData);
+            // --- END OPTION B ---
+
+            // now buy the token (demo: use fake nonce, not the real one)
+            await this.buyToken("fake-valid-nonce"); //(payload.nonce);
 
         } catch(err) {
             //this.toast.error(err, null, {timeOut: 5000, positionClass: 'toast-bottom-center'});
             // XXX demo: buy anyway
-            await this.buyToken("fake-valid-nonce");
+            console.log(err);
+            await this.buyToken(null); // buy without nonce = create token without payment
         } finally {
             this.processing = false;
         }
