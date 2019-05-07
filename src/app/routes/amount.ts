@@ -109,7 +109,6 @@ export class AmountComponent implements OnInit {
             paymentMethodNonce: nonce
         });
 
-        console.log("Token: " + t);
         this.appService.currentToken = t;
         this.router.navigate(['token'], { replaceUrl: true });
     }
