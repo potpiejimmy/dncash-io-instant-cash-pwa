@@ -7,11 +7,11 @@ import { InstantApiService } from '../services/instantapi.service';
 import { ToastrService } from "ngx-toastr";
 import * as braintreeClient from 'braintree-web/client';
 // Option A) Payment Request API version:
-//import * as paymentApi from 'braintree-web/payment-request';
+import * as paymentApi from 'braintree-web/payment-request';
 // Option B) Google Pay API version:
 // Note: this one also needs the pay.js script in index.html, see there
-import * as paymentApi from 'braintree-web/google-payment';
-declare var google: any; // compile workaround for pay.js Google lib
+//import * as paymentApi from 'braintree-web/google-payment';
+//declare var google: any; // compile workaround for pay.js Google lib
 
 @Component({
     selector: 'amount',
@@ -70,11 +70,10 @@ export class AmountComponent implements OnInit {
             });
     
             // --- OPTION A: Payment Request API ---
-/*            
+            
             // create payment request API
             let request = await paymentApi.create({
-                client: braintreeClientInstance,
-                googlePayVersion: 2
+                client: braintreeClientInstance
             });
     
             // get the payment token nonce
@@ -90,10 +89,10 @@ export class AmountComponent implements OnInit {
                 }
             });
             console.log(payload);
-  */  
+  
             // --- END OPTION A ---
             // --- OPTION B: Google Pay API ---
-
+/*
             let googlePaymentsClient = new google.payments.api.PaymentsClient({
                 environment: 'TEST' // Or 'PRODUCTION'
             });
@@ -136,7 +135,7 @@ export class AmountComponent implements OnInit {
             let paymentData = await googlePaymentsClient.loadPaymentData(paymentDataRequest);
             let payload = googlePaymentInstance.parseResponse(paymentData);
             // --- END OPTION B ---
-
+*/
             // now buy the token (demo: use fake nonce, not the real one)
             await this.buyToken("fake-valid-nonce"); //(payload.nonce);
 
