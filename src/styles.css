@@ -85,3 +85,7 @@ body {
 .table-cell {
     display: table-cell;
 }
+
+.hidden {
+    visibility: hidden;
+}

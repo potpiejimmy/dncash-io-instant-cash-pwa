@@ -1,17 +1,17 @@
 <div style="margin: 1em; height: 80%;">
     <div fxLayout="column" style="height: 100%;">
-        <div fxFlex style="text-align:center;">
+        <div fxFlex style="text-align:center; font-size: 1.2em;" [ngClass]="{'hidden':!controlsVisible}">
             <span>Choose your desired notes</span>
         </div>
 
-        <denom-sel fxFlex #sel5   denom="500"   (updated)="update()"></denom-sel>
-        <denom-sel fxFlex #sel10  denom="1000"  (updated)="update()"></denom-sel>
-        <denom-sel fxFlex #sel20  denom="2000"  (updated)="update()"></denom-sel>
-        <denom-sel fxFlex #sel50  denom="5000"  (updated)="update()"></denom-sel>
+        <denom-sel [@slideInOut1] fxFlex #sel5   denom="500"   (updated)="update()" [controlsVisible]="controlsVisible"></denom-sel>
+        <denom-sel [@slideInOut2] fxFlex #sel10  denom="1000"  (updated)="update()" [controlsVisible]="controlsVisible"></denom-sel>
+        <denom-sel [@slideInOut3] fxFlex #sel20  denom="2000"  (updated)="update()" [controlsVisible]="controlsVisible"></denom-sel>
+        <denom-sel [@slideInOut4] fxFlex #sel50  denom="5000"  (updated)="update()" [controlsVisible]="controlsVisible"></denom-sel>
 
         <div fxFlex></div>
 
-        <button *ngIf="!processing" mat-raised-button color="primary" (click)="finish()" [disabled]="!valid() || processing" style="font-size: 1.5em; min-height: 2em; width: 100%; margin-top: 1em;">
+        <button *ngIf="!processing" [ngClass]="{'hidden':!controlsVisible}" mat-raised-button color="primary" (click)="finish()" [disabled]="!valid() || processing" style="font-size: 1.5em; min-height: 2em; width: 100%; margin-top: 1em;">
             Get {{amount/100}} {{symbol}}
         </button>
         <div *ngIf="processing" class="horizontalcenter">

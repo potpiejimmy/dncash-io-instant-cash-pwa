@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from "@angular/core";
+import { Component, Input, Output, EventEmitter, OnInit } from "@angular/core";
 
 @Component({
     selector: 'denom-sel',
@@ -13,6 +13,9 @@ export class DenomSelComponent {
     updated: EventEmitter<void> = new EventEmitter();
 
     count: number = 0;
+
+    @Input()
+    controlsVisible = false;
 
     plus(): void {
         this.count = Math.min(5, this.count+1);

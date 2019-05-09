@@ -5,6 +5,7 @@ import { Router } from "@angular/router";
 import { LocalStorageService } from "angular-2-local-storage";
 import { InstantApiService } from '../services/instantapi.service';
 import { ToastrService } from "ngx-toastr";
+import { trigger, transition, style, animate } from '@angular/animations';
 import * as braintreeClient from 'braintree-web/client';
 // Option A) Payment Request API version:
 import * as paymentApi from 'braintree-web/payment-request';
@@ -15,7 +16,33 @@ import * as paymentApi from 'braintree-web/payment-request';
 
 @Component({
     selector: 'amount',
-    templateUrl: 'amount.html'
+    templateUrl: 'amount.html',
+    animations: [
+        trigger('slideInOut1', [
+            transition(':enter', [
+                style({transform: 'translateX(100%)'}),
+                animate('500ms 0ms ease-in', style({transform: 'translateX(0%)'}))
+            ])
+        ]),
+        trigger('slideInOut2', [
+            transition(':enter', [
+                style({transform: 'translateX(100%)'}),
+                animate('500ms 100ms ease-in', style({transform: 'translateX(0%)'}))
+            ])
+        ]),
+        trigger('slideInOut3', [
+            transition(':enter', [
+                style({transform: 'translateX(100%)'}),
+                animate('500ms 200ms ease-in', style({transform: 'translateX(0%)'}))
+            ])
+        ]),
+        trigger('slideInOut4', [
+            transition(':enter', [
+                style({transform: 'translateX(100%)'}),
+                animate('500ms 300ms ease-in', style({transform: 'translateX(0%)'}))
+            ])
+        ])
+    ]
 })
 export class AmountComponent implements OnInit {
 
@@ -31,6 +58,8 @@ export class AmountComponent implements OnInit {
 
     processing: boolean;
 
+    controlsVisible = false;
+
     constructor(
         public appService: AppService,
         private instantApiService: InstantApiService,
@@ -42,6 +71,7 @@ export class AmountComponent implements OnInit {
 
     ngOnInit(): void {
         this.denoms = [this.sel5,this.sel10, this.sel20, this.sel50];
+        setTimeout(()=>this.controlsVisible=true, 900);
     }
 
     update(): void {
