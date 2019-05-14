@@ -98,7 +98,7 @@ export class AmountComponent implements OnInit {
 
     async finish() {
         // --- FAKE APPLE PAY INTERACTION ---
-        if (true){
+        if (!!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform)){
             let config = new OverlayConfig({
                 width: '100%',
                 hasBackdrop: true
