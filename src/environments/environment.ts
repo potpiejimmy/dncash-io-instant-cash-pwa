@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: "http://localhost:3001/instant/v1/"
+  apiUrl: "https://instantapi.dncash.io/instant/v1/"
 };
 
 /*

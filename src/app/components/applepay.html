@@ -1,0 +1,17 @@
+<div [@slideInOut] *ngIf="displayed" style="width: 100vw; padding: 12px 0 25px 0; background-color: #CFCFCF;">
+    <div style="border-bottom: 1px solid rgba(147, 147, 151, 0.952); width: 100%;">
+        <img src="../../assets/Apple_Pay_logo.svg" style="width: 47px; margin-left: 15px; margin-bottom: 6px;">
+        <div style="color: rgb(0,122,255); float: right; margin-right: 15px; letter-spacing: 0.5px;" (click)="dismiss()">Cancel</div>
+    </div>
+    <div style="border-bottom: 1px solid rgba(147, 147, 151, 0.500); width: 95%; margin-left: 5%; height: 58px;">
+        <img src="../../assets/demo-card.svg" style="float: left; margin: 6px 0 6px 30px; width: 50px;">
+        <div style="float: left; width: 40%; margin-left: 15px; margin-top: 12px; font-size: 12px;">DEMO MASTERCARD (···· 1234)</div>
+    </div>
+    <div style="border-bottom: 1px solid rgba(147, 147, 151, 0.500); width: 95%; margin-left: 5%; height: 58px;">
+        <div style="float: left; width: 40%; margin-left: 95px; font-size: 12px; margin-top: 12px;">DNCASH INSTANT (DEMO)</div>
+        <div style="float: right; width: 20%; font-size: 18px; margin: 16px 15px 0 0; text-align: right">{{amount}} €</div>
+    </div>
+    <div style="margin-top: 15px; display: flex;">
+        <button mat-flat-button style="background-color: rgb(0,122,255); color: white; margin: 0 auto 0 auto;"(click)="process()">Pay</button>
+    </div>
+</div>

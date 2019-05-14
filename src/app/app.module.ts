@@ -3,15 +3,19 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { HttpClientModule }    from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { OverlayModule } from '@angular/cdk/overlay';
 
 // Material:
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 
 // Externals
 import { LocalStorageModule } from 'angular-2-local-storage';
 import { ToastrModule } from 'ngx-toastr';
+import { ZXingScannerModule } from '@zxing/ngx-scanner';
 
 // App
 import { AppRoutingModule } from './app-routing.module';
@@ -27,6 +31,7 @@ import { ProcessComponent } from './routes/process';
 import { DenomShowComponent } from './components/denomshow';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { ApplePayPanel} from './routes/amount';
 
 @NgModule({
   declarations: [
@@ -37,7 +42,8 @@ import { environment } from '../environments/environment';
     DenomShowComponent,
     RegisterComponent,
     TokenComponent,
-    ProcessComponent
+    ProcessComponent,
+    ApplePayPanel
   ],
   imports: [
     BrowserModule,
@@ -45,18 +51,25 @@ import { environment } from '../environments/environment';
     AppRoutingModule,
     HttpClientModule,
     FlexLayoutModule,
+    OverlayModule,
     // Material:
     MatToolbarModule,
     MatButtonModule,
     MatProgressSpinnerModule,
+    MatFormFieldModule,
+    MatSelectModule,
     // Externals:
     LocalStorageModule.forRoot({ prefix: 'dncashio-instant-cash', storageType: 'localStorage' }), // or sessionStorage
-    ToastrModule.forRoot({ preventDuplicates: true }), ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    ToastrModule.forRoot({ preventDuplicates: true }), ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    ZXingScannerModule
   ],
   providers: [
     AppService,
     InstantApiService
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [
+    ApplePayPanel
+  ]
 })
 export class AppModule { }

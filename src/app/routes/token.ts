@@ -3,6 +3,7 @@ import { AppService } from "../services/app.service";
 import { Router, ActivatedRoute } from "@angular/router";
 import { InstantApiService } from "../services/instantapi.service";
 import { ToastrService } from "ngx-toastr";
+import { ZXingScannerComponent } from '@zxing/ngx-scanner';
 import * as moment from 'moment';
 
 @Component({
@@ -11,8 +12,23 @@ import * as moment from 'moment';
 })
 export class TokenComponent implements OnInit, OnDestroy {
 
+    scanner: ZXingScannerComponent;
+
+    hasDevices: boolean;
+    scanning: boolean;
+
+    availableDevices: MediaDeviceInfo[];
+    currentDevice: MediaDeviceInfo;
+
     expirationString: string;
     updateExpirationTimeout: any;
+
+    @ViewChild(ZXingScannerComponent) set scannerComponent(scannerComponent: ZXingScannerComponent) {
+        if (scannerComponent) {
+            this.scanner = scannerComponent;
+            this.setupCamera();
+       }
+    } 
 
     constructor(
         public appService: AppService,
@@ -73,5 +89,31 @@ export class TokenComponent implements OnInit, OnDestroy {
 
     finish() {
         this.router.navigate(['/'], { replaceUrl: true });
+    }
+
+    setupCamera() {
+        this.scanner.camerasFound.subscribe((devices: MediaDeviceInfo[]) => {
+            this.hasDevices = true;
+            this.availableDevices = devices;
+            if (devices.length > 0){
+                this.currentDevice = devices[0];
+                for (const device of devices){
+                    console.log(device);
+                    if(!device.label.toUpperCase().includes("FR")) this.currentDevice = device;
+                }
+                this.scanner.changeDevice(this.currentDevice);
+            }
+        });
+        this.scanner.camerasNotFound.subscribe(() => this.hasDevices = false);
+    }
+
+    scan() {
+        this.scanning = true;
+    }
+
+    qrCodeScanned(url: string) {
+        // this.scanning = false;
+        this.appService.triggerCode = url.substring((url.indexOf('triggercode=')+12));
+        this.router.navigate(['/process'], { replaceUrl: true });
     }
 }

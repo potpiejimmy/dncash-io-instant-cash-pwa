@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit, ViewChild, Host, ViewContainerRef } from "@angular/core";
+import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { DenomSelComponent } from "../components/denomsel";
 import { AppService } from "../services/app.service";
 import { Router } from "@angular/router";
@@ -9,6 +10,8 @@ import { trigger, transition, style, animate } from '@angular/animations';
 import * as braintreeClient from 'braintree-web/client';
 // Option A) Payment Request API version:
 import * as paymentApi from 'braintree-web/payment-request';
+import { ComponentPortal } from '@angular/cdk/portal';
+
 // Option B) Google Pay API version:
 // Note: this one also needs the pay.js script in index.html, see there
 //import * as paymentApi from 'braintree-web/google-payment';
@@ -60,12 +63,16 @@ export class AmountComponent implements OnInit {
 
     controlsVisible = false;
 
+    overlayRef: OverlayRef;
+
     constructor(
         public appService: AppService,
         private instantApiService: InstantApiService,
         private localStorage: LocalStorageService,
         private router: Router,
-        public toast: ToastrService
+        public toast: ToastrService,
+        private overlay: Overlay,
+        public viewContainerRef: ViewContainerRef
     ) {
     }
 
@@ -90,6 +97,25 @@ export class AmountComponent implements OnInit {
     }
 
     async finish() {
+        // --- FAKE APPLE PAY INTERACTION ---
+        if (true){
+            let config = new OverlayConfig({
+                width: '100%',
+                hasBackdrop: true
+            });  
+            config.positionStrategy = this.overlay
+              .position()
+              .global()
+              .centerHorizontally()
+              .bottom('0');
+            this.overlayRef = this.overlay.create(config);
+            this.overlayRef.attach(new ComponentPortal(ApplePayPanel, this.viewContainerRef));
+        } else {
+            await this.pay();
+        }
+    }
+
+    async pay() {
         this.processing = true;
 
         // now buy the token:
@@ -197,3 +223,44 @@ export class AmountComponent implements OnInit {
     }
 }
 
+// ---- Apple Pay Demo
+
+@Component({
+    selector: 'applepay-panel',
+    templateUrl: '../components/applepay.html',
+    animations: [
+        trigger('slideInOut', [
+            transition(':enter', [
+                style({transform: 'translateY(100%)'}),
+                animate('300ms 0ms ease-in', style({transform: 'translateY(0%)'}))
+            ]),
+            transition(':leave', [
+                animate('200ms 0ms ease-in', style({transform: 'translateY(100%)'}))
+            ])
+        ])
+    ]
+})
+export class ApplePayPanel {
+    amount;
+    component;
+    displayed = true;
+
+    constructor(@Host() _component: AmountComponent) {
+        this.component = _component;
+        this.amount = _component.amount/100;
+        this.amount = this.amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+        _component.overlayRef.backdropClick().subscribe(() => {
+            this.dismiss();
+        });
+    }
+
+    process() {
+        this.dismiss();
+        this.component.buyToken(null);
+    }
+
+    dismiss() {
+        this.displayed = false;
+        setTimeout(()=>{this.component.overlayRef.dispose();},300);
+    }
+}

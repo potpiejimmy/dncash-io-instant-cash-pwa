@@ -13,12 +13,32 @@
 
 <denom-show [token]="token()" height="40"></denom-show>
 
-<div class="horizontalcenter">
+<div *ngIf="!scanning" class="horizontalcenter">
     <img fxFlex src="assets/nfc.png" width="100%" height="100%"/>
 </div>
-<div class="horizontalcenter" style="margin: 2em; text-align: center;">
+<div *ngIf="!scanning" class="horizontalcenter" style="margin: 2em; text-align: center;">
     <span>Please hold your phone to the ATM. This app doesn't need to run for that to work.</span>
 </div>
-<div class="horizontalcenter" style="margin: 2em; text-align: center;">
-    <span>Alternatively, scan the ATM's code with your iPhone camera.</span>
+<div *ngIf="!scanning" class="horizontalcenter" style="margin: 2em; text-align: center;">
+    <span style="color: blue;" (click)="scan()">Alternatively, scan the ATM's code with your iPhone camera.</span>
+</div>
+
+<div *ngIf="scanning">
+    <p class="horizontalcenter">
+        Scan the QR code on the ATM:
+    </p>
+    <div *ngIf="availableDevices" class="horizontalcenter">
+        <mat-form-field>
+            <mat-select placeholder="Camera select" (selectionChange)="onDeviceSelectChange($event.value)">
+              <mat-option *ngFor="let device of availableDevices" [value]="device.deviceId">
+                {{device.label}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+    </div>
+    <div class="horizontalcenter">
+        <div style="width: 80%; height: 40%;">
+            <zxing-scanner start="true" [device]="currentDevice" (scanSuccess)="qrCodeScanned($event)"></zxing-scanner>
+        </div>
+    </div>
 </div>
