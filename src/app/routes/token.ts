@@ -107,6 +107,10 @@ export class TokenComponent implements OnInit, OnDestroy {
         this.scanner.camerasNotFound.subscribe(() => this.hasDevices = false);
     }
 
+    onDeviceSelectChange(selectedValue: string) {
+        this.currentDevice = this.scanner.getDeviceById(selectedValue);
+    }
+
     scan() {
         this.scanning = true;
     }

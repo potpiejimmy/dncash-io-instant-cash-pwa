@@ -1,6 +1,6 @@
 {
   "name": "dncash-io-instant-cash-pwa",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -9,6 +9,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "postinstall": "node patch",
+    "push": "git push origin && git push origin --tags && git push github && git push github --tags",
     "deploy": "ng build --prod && aws s3 cp dist/dncash-io-instant-cash-pwa s3://instant.dncash.io/ --recursive --include \"*\" --acl public-read --cache-control public,max-age=43200,no-transform && aws cloudfront create-invalidation --distribution-id EVU6ZI8LKZTGA --paths \"/*\""
   },
   "private": true,
