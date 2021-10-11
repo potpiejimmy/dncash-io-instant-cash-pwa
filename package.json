@@ -32,7 +32,7 @@
     "braintree-web": "^3.44.2",
     "core-js": "^2.5.4",
     "crypto-browserify": "^3.12.0",
-    "keypair": "^1.0.1",
+    "keypair": "^1.0.4",
     "moment": "^2.24.0",
     "ngx-toastr": "^10.0.2",
     "rxjs": "~6.3.3",
